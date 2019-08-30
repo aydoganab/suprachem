@@ -13,7 +13,7 @@ let classList = require('./src/class_replace');
 let bootsrapJS = "node_modules/bootstrap/dist/js/bootstrap.min.js";
 let js2_objects = [
     'node_modules/jquery/dist/jquery.min.js',
-    '/node_modules/popper.js/dist/umd/popper.min.js',
+    'node_modules/popper.js/dist/umd/popper.min.js',
     'builds/development/bootstrap.min.js',
     'node_modules/jquery-lazy/jquery.lazy.min.js',
     'src/suprachem.js'
@@ -29,7 +29,7 @@ gulp.task('jade', function () {
 gulp.task('sass', function () {
     return gulp.src('suprachem.scss')
         .pipe(sass())
-        .pipe(autoprefixer({browsers: ['last 2 versions']}))
+        .pipe(autoprefixer({browserlist: ["last 2 version", "> 1%", "maintained node versions", "not dead"]}))
         .pipe(rename("suprachem.css"))
         .pipe(gulp.dest("builds/development"))
 });
