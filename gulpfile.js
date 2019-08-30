@@ -6,16 +6,22 @@ let gulp = require('gulp'),
     csso = require('gulp-clean-css'),
     concat = require('gulp-concat'),
     rename = require('gulp-rename'),
+    minify=require('@node-minify/core'),
+    gcc=require('@node-minify/google-closure-compiler'),
     browserSync = require('browser-sync').create();
 
 let classList = require('./src/class_replace');
 
-let bootsrapJS = "node_modules/bootstrap/dist/js/bootstrap.min.js";
+let bootsrapJS = [
+    'node_modules/bootstrap/js/dist/index.js',
+    'node_modules/bootstrap/js/dist/util.js',
+    'node_modules/bootstrap/js/dist/collapse.js',
+];
 let js2_objects = [
     'node_modules/jquery/dist/jquery.min.js',
-    'node_modules/popper.js/dist/umd/popper.min.js',
+    //'node_modules/popper.js/dist/umd/popper.min.js',
     'builds/development/bootstrap.min.js',
-    'node_modules/jquery-lazy/jquery.lazy.min.js',
+    //'node_modules/jquery-lazy/jquery.lazy.min.js',
     'src/suprachem.js'
 ];
 
@@ -50,8 +56,26 @@ gulp.task('classReplaceCss', function () {
 //bootstrapJS
 gulp.task('bsJS', function () {
     return gulp.src(bootsrapJS)
+        .pipe(concat("bootstrap.min.js"))
         .pipe(batchreplace(classList))
         .pipe(gulp.dest('builds/development'));
+});
+
+//new bootstrap js
+gulp.task('bsJS2', function () {
+    return minify({
+        compressor: gcc,
+        input:bootsrapJS,
+        output:'builds/development/bootstrap.min.js',
+        options:{
+            compilationLevel: 'WHITESPACE_ONLY'
+        },
+        callback:function () {
+            return gulp.src('builds/development/bootstrap.min.js')
+                .pipe(batchreplace(classList))
+                .pipe(gulp.dest('builds/development'));
+        }
+    });
 });
 
 //concat js
@@ -77,4 +101,5 @@ gulp.task('classReplace', gulp.series('classReplaceHtml', 'classReplaceCss'));
 gulp.task('noSassNoJs', gulp.series('jade', 'classReplaceHtml'));
 
 //do all stuff
-gulp.task('default', gulp.series('jade', 'sass', 'classReplace', 'bsJS', 'js'));
+//gulp.task('default', gulp.series('jade', 'sass', 'classReplace', 'bsJS', 'js'));
+gulp.task('default', gulp.series('jade', 'sass', 'classReplace', 'bsJS2', 'js'));
