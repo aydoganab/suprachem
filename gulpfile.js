@@ -20,7 +20,7 @@ let js2_objects = [
 ];
 
 gulp.task('jade', function () {
-    return gulp.src('src/templates/*jade')
+    return gulp.src('src/templates/*pug')
         .pipe(jade())
         .pipe(gulp.dest('builds/development'));
 });
