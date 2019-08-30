@@ -1,0 +1,51 @@
+doctype html
+html(lang='en')
+    head
+        meta(charset="utf-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
+        link(rel="shortcut icon" href="favicon.ico" type="image/x-icon")
+        link(rel="icon" href="favicon.ico" type="image/x-icon")
+        title SupraChem Research Group
+        link(rel="stylesheet" href="suprachem.css")
+        script(src="https://www.googletagmanager.com/gtag/js?id=UA-48118884-3")
+        script(src="suprachem.js")
+
+    body
+
+        //menu
+        div.fixed-top(style="background-color:#292933")
+            div.container.px-md-5
+
+                nav.nbsc
+
+                    a(class="navbar-brand", href="./")
+                        img(
+                            src="img/logo.png"
+                            height="30"
+                            width="128"
+                        )
+
+                    button.navbar-toggler(
+                        type="button"
+                        data-toggle="collapse"
+                        data-target="#nb"
+                        aria-controls="nb"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation"
+                    )
+                        span.navbar-toggler-icon
+
+                    div#nb.collapse.navbar-collapse
+                        ul.navbar-nav.ml-auto.mt-2.mt-lg-0.text-uppercase.font-weight-light
+                            li.nav-item
+                                a.nav-link(href="research.html") Research
+                            li.nav-item
+                                a.nav-link(href="publications.html") Publications
+                            li.nav-item
+                                a.nav-link(href="members.html") Members
+
+        //page content
+        block page_content
+
+        //page scripts
+        block page_scripts
