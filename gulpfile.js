@@ -8,20 +8,16 @@ let gulp = require('gulp'),
     rename = require('gulp-rename'),
     minify=require('@node-minify/core'),
     gcc=require('@node-minify/google-closure-compiler'),
+    terser=require('@node-minify/terser'),
     browserSync = require('browser-sync').create();
 
 let classList = require('./src/class_replace');
 
-let bootsrapJS = [
+let js_objects = [
+    'node_modules/jquery/dist/jquery.js',
     'node_modules/bootstrap/js/dist/index.js',
     'node_modules/bootstrap/js/dist/util.js',
     'node_modules/bootstrap/js/dist/collapse.js',
-];
-let js2_objects = [
-    'node_modules/jquery/dist/jquery.min.js',
-    //'node_modules/popper.js/dist/umd/popper.min.js',
-    'builds/development/bootstrap.min.js',
-    //'node_modules/jquery-lazy/jquery.lazy.min.js',
     'src/suprachem.js'
 ];
 
@@ -53,39 +49,28 @@ gulp.task('classReplaceCss', function () {
         .pipe(gulp.dest("builds/dist"))
 });
 
-//bootstrapJS
-gulp.task('bsJS', function () {
-    return gulp.src(bootsrapJS)
-        .pipe(concat("bootstrap.min.js"))
-        .pipe(batchreplace(classList))
-        .pipe(gulp.dest('builds/development'));
+gulp.task('combineJS', function () {
+    return gulp.src(js_objects)
+        .pipe(concat('suprachem.js'))
+        .pipe(gulp.dest('builds/development'))
 });
 
-//new bootstrap js
-gulp.task('bsJS2', function () {
+gulp.task('distJS', function () {
     return minify({
-        compressor: gcc,
-        input:bootsrapJS,
-        output:'builds/development/bootstrap.min.js',
+        compressor: terser,
+        input:'builds/development/suprachem.js',
+        output:'builds/development/suprachem.min.js',
         options:{
-            compilationLevel: 'WHITESPACE_ONLY'
-        },
-        callback:function () {
-            return gulp.src('builds/development/bootstrap.min.js')
-                .pipe(batchreplace(classList))
-                .pipe(gulp.dest('builds/development'));
+            warnings: true, // pass true to display compressor warnings.
+            mangle: false, // pass false to skip mangling names.
+            output: {}, // pass an object if you wish to specify additional output options. The defaults are optimized for best compression.
+            compress: false
         }
     });
 });
 
-//concat js
-gulp.task('js', function () {
-    return gulp.src(js2_objects)
-        .pipe(concat("suprachem.js"))
-        .pipe(gulp.dest("builds/dist"))
-});
 
-//browsersync
+//browsersync dist
 gulp.task('browserSync', function () {
     browserSync.init({
         server: {
@@ -102,4 +87,4 @@ gulp.task('noSassNoJs', gulp.series('jade', 'classReplaceHtml'));
 
 //do all stuff
 //gulp.task('default', gulp.series('jade', 'sass', 'classReplace', 'bsJS', 'js'));
-gulp.task('default', gulp.series('jade', 'sass', 'classReplace', 'bsJS2', 'js'));
+//gulp.task('default', gulp.series('jade', 'sass', 'classReplace', 'bsJS3', 'js'));
