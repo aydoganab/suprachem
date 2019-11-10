@@ -84,7 +84,3 @@ gulp.task('classReplace', gulp.series('classReplaceHtml', 'classReplaceCss'));
 
 //jade and html class replace
 gulp.task('noSassNoJs', gulp.series('jade', 'classReplaceHtml'));
-
-//do all stuff
-//gulp.task('default', gulp.series('jade', 'sass', 'classReplace', 'bsJS', 'js'));
-//gulp.task('default', gulp.series('jade', 'sass', 'classReplace', 'bsJS3', 'js'));
