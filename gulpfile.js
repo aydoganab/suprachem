@@ -59,7 +59,7 @@ gulp.task('distJS', function () {
     return minify({
         compressor: terser,
         input:'builds/development/suprachem.js',
-        output:'builds/development/suprachem.min.js',
+        output:'builds/dist/suprachem.js',
         options:{
             warnings: true, // pass true to display compressor warnings.
             mangle: false, // pass false to skip mangling names.
@@ -84,3 +84,5 @@ gulp.task('classReplace', gulp.series('classReplaceHtml', 'classReplaceCss'));
 
 //jade and html class replace
 gulp.task('noSassNoJs', gulp.series('jade', 'classReplaceHtml'));
+
+gulp.task('default', gulp.series('jade','classReplaceHtml', 'classReplaceCss', 'combineJS', 'distJS'));
