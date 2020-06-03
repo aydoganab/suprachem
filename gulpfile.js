@@ -18,7 +18,6 @@ let js_objects = [
     'node_modules/bootstrap/js/dist/index.js',
     'node_modules/bootstrap/js/dist/util.js',
     'node_modules/bootstrap/js/dist/collapse.js',
-    'src/suprachem.js'
 ];
 
 gulp.task('jade', function () {
@@ -85,4 +84,4 @@ gulp.task('classReplace', gulp.series('classReplaceHtml', 'classReplaceCss'));
 //jade and html class replace
 gulp.task('noSassNoJs', gulp.series('jade', 'classReplaceHtml'));
 
-gulp.task('default', gulp.series('jade','classReplaceHtml', 'classReplaceCss', 'combineJS', 'distJS'));
+gulp.task('default', gulp.series('sass','jade','classReplaceHtml', 'classReplaceCss', 'combineJS', 'distJS'));
