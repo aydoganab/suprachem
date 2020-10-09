@@ -1,5 +1,5 @@
 let gulp = require('gulp'),
-    jade = require('gulp-pug'),
+    pug = require('gulp-pug'),
     batchreplace = require('gulp-batch-replace'),
     sass = require('gulp-sass'),
     autoprefixer = require('gulp-autoprefixer'),
@@ -20,9 +20,9 @@ let js_objects = [
     'node_modules/bootstrap/js/dist/collapse.js',
 ];
 
-gulp.task('jade', function () {
+gulp.task('pug', function () {
     return gulp.src('src/*pug')
-        .pipe(jade())
+        .pipe(pug())
         .pipe(gulp.dest('builds/development'));
 });
 
@@ -81,7 +81,7 @@ gulp.task('browserSync', function () {
 //replace classes in html and css
 gulp.task('classReplace', gulp.series('classReplaceHtml', 'classReplaceCss'));
 
-//jade and html class replace
-gulp.task('noSassNoJs', gulp.series('jade', 'classReplaceHtml'));
+//pug and html class replace
+gulp.task('noSassNoJs', gulp.series('pug', 'classReplaceHtml'));
 
-gulp.task('default', gulp.series('sass','jade','classReplaceHtml', 'classReplaceCss', 'combineJS', 'distJS'));
+gulp.task('default', gulp.series('sass','pug','classReplaceHtml', 'classReplaceCss', 'combineJS', 'distJS'));
